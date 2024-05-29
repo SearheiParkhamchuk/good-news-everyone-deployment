@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  server:
+    build: 
+      context: ./good-news-everyone-server
+      target: production
+    container_name: server
+    restart: always
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - app
+
+  client:
+    build: 
+      context: ./good-news-everyone-client
+      target: production
+    container_name: client
+    restart: always
+    ports:
+      - "${CLIENT_APP_PORT}:3000"
+    networks:
+      - app
+
+  postgres:
+    extends:
+      file: ./good-news-everyone-server/docker-compose.yml
+      service: postgres
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
