@@ -1,6 +1,6 @@
 [submodule "good-news-everyone-client"]
 	path = good-news-everyone-client
-	url = ./good-news-everyone-client/
+	url = https://github.com/SearheiParkhamchuk/good-news-everyone-client
 [submodule "good-news-everyone-server"]
 	path = good-news-everyone-server
-	url = ./good-news-everyone-server
+	url = https://github.com/SearheiParkhamchuk/good-news-everyone-server
