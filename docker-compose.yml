@@ -3,10 +3,8 @@ services:
     build: 
       context: ./good-news-everyone-server
       target: production
-    container_name: server
+    container_name: ${SERVER_HOST}
     restart: always
-    ports:
-      - "${APP_PORT}:${APP_PORT}"
     env_file:
       - .env
     depends_on:
@@ -18,10 +16,10 @@ services:
     build: 
       context: ./good-news-everyone-client
       target: production
-    container_name: client
+    container_name: ${CLIENT_HOST}
     restart: always
-    ports:
-      - "${CLIENT_APP_PORT}:3000"
+    env_file:
+      - .env
     networks:
       - app
 
@@ -31,6 +29,31 @@ services:
       service: postgres
     networks:
       - app
+
+  reverse-proxy:
+    image: nginx:latest
+    container_name: ${REVERSE_PROXY_HOST}
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www/:/var/www/certbot/:ro
+    depends_on:
+      - server
+      - client
+    networks:
+      - app
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
 networks:
   app:
