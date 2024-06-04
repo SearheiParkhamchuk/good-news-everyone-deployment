@@ -29,8 +29,8 @@ server {
   server_name ${REVERSE_PROXY_HOST};
   server_tokens off;
   
-  ssl_certificate /etc/nginx/ssl/live/${REVERSE_PROXY_HOST}/fullchain.pem;
-  ssl_certificate_key /etc/nginx/ssl/live/${REVERSE_PROXY_HOST}/privkey.pem;
+  ssl_certificate /etc/letsencrypt/live/${REVERSE_PROXY_HOST}/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/${REVERSE_PROXY_HOST}/privkey.pem
 
   location / {
     proxy_pass http://client;
